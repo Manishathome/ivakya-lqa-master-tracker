@@ -5307,6 +5307,34 @@ function notify(msg, cls='') {
 // =====================================================================
 initPreloadedData();
 // Data is loaded from Supabase after login — see doLogin()
+// Manikandan123
+// 1. Initialize your client
+const supabase = supabase.createClient('YOUR_URL', 'YOUR_KEY')
+
+// 2. This function runs automatically on refresh
+const checkUser = async () => {
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  if (session) {
+    console.log("User is still logged in:", session.user)
+    // Update your UI here (e.g., hide login button, show dashboard)
+  } else {
+    console.log("No active session found.")
+    // Redirect to login if they are on a protected page
+  }
+}
+
+checkUser()
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN') {
+    console.log('User signed in:', session.user)
+  }
+  if (event === 'SIGNED_OUT') {
+    // Redirect them to the login page immediately
+    window.location.href = '/login.html'
+  }
+})
+  // Manikandan123
 </script>
 <!-- MOBILE BOTTOM BAR -->
 <div class="mobile-actions" id="mobileActions">
